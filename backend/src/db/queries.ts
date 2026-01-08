@@ -21,7 +21,11 @@ export const getUSerById = async (id: number) => {
 };
 
 export const updateUSer = async (id: string, data: Partial<NewUser>) => {
-  await db
+    const existingUser = await getUSerById(Number(id));
+    if (!existingUser) {
+        throw new Error('User not found');  
+    }
+    const [users] = await db
     .update(users)
     .set(data)
     .where(eq(users.id, Number(id)))
